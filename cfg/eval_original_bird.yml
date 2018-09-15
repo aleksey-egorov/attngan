@@ -1,0 +1,35 @@
+CONFIG_NAME: 'Eval1'
+
+DATASET_NAME: 'birds'
+DATA_DIR: 'data/birds'
+SAVE_DIR: 'results'
+GPU_ID: -1
+CUDA: False
+WORKERS: 1
+
+
+
+B_VALIDATION: False  # True  # False
+TREE:
+    BRANCH_NUM: 3
+
+
+TRAIN:
+    FLAG: False
+    NET_G: 'models/birds/bird_AttnGAN2_1.pth'
+    B_NET_D: False
+    BATCH_SIZE: 25
+    NET_E_TEXT: 'DAMSMencoders/birds/text_encoder200.pth'
+
+
+GAN:
+    DF_DIM: 64
+    GF_DIM: 32
+    Z_DIM: 100
+    R_NUM: 2
+
+TEXT:
+    EMBEDDING_DIM: 256
+    CAPTIONS_PER_IMAGE: 10
+    WORDS_NUM: 25
+
