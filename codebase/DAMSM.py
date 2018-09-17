@@ -81,8 +81,51 @@ class DAMSM(object):
         return text_encoder, image_encoder, labels, start_epoch
 
 
+
     def train(self):
         '''Training models'''
+
+        para = list(self.text_encoder.parameters())
+        for v in self.image_encoder.parameters():
+            if v.requires_grad:
+                para.append(v)
+
+        try:
+            lr = cfg.TRAIN.ENCODER_LR
+            for epoch in range(self.start_epoch, cfg.TRAIN.MAX_EPOCH):
+                self.optimizer = optim.Adam(para, lr=lr, betas=(0.5, 0.999))
+                self.epoch_start_time = time.time()
+                w_loss_train = 0.
+                s_loss_train = 0.
+
+                _, s_loss_step, w_loss_step = self.train_step(epoch)
+                w_loss_train += w_loss_step
+                s_loss_train += s_loss_step
+
+                self.log.add('-' * 89)
+                if len(self.data_loader_val) > 0:
+                    s_loss_val, w_loss_val = self.evaluate()
+                    self.log.add('| End epoch {:3d}/{:3d} | train loss {:5.2f} {:5.2f} | valid loss '
+                                 '{:5.2f} {:5.2f} | lr {:.5f}| Time {:5.2f}s'
+                                 .format(epoch, self.max_epoch, s_loss_train, w_loss_train, s_loss_val, w_loss_val, lr,
+                                         time.time() - self.epoch_start_time))
+                    self.log.add('-' * 89)
+
+
+                if lr > cfg.TRAIN.ENCODER_LR / 10.:
+                    lr *= 0.98
+
+                # Saving models
+                self.save_models(epoch, s_loss_train, s_loss_val, w_loss_train, w_loss_val)
+
+        except KeyboardInterrupt:
+            self.log.add('-' * 89)
+            self.log.add('Exiting from training early')
+
+
+    '''
+    def train_1(self):
+        
 
         para = list(self.text_encoder.parameters())
         for v in self.image_encoder.parameters():
@@ -126,6 +169,7 @@ class DAMSM(object):
         except KeyboardInterrupt:
             self.log.add('-' * 89)
             self.log.add('Exiting from training early')
+    '''
 
 
     def train_step(self, epoch):
@@ -188,11 +232,11 @@ class DAMSM(object):
             if step % self.update_interval == 0:
                 count = epoch * batch_num + step
 
-                s_cur_loss0 = s_total_loss0.item() / self.update_interval
-                s_cur_loss1 = s_total_loss1.item() / self.update_interval
+                s_cur_loss0 = s_total_loss0[0] / self.update_interval
+                s_cur_loss1 = s_total_loss1[0] / self.update_interval
 
-                w_cur_loss0 = w_total_loss0.item() / self.update_interval
-                w_cur_loss1 = w_total_loss1.item() / self.update_interval
+                w_cur_loss0 = w_total_loss0[0] / self.update_interval
+                w_cur_loss1 = w_total_loss1[0] / self.update_interval
 
                 elapsed = time.time() - start_time
                 self.log.add('| Epoch {:3d} | bt {:3d}/{:3d} | ms/bt {:5.2f} | S_loss {:2.4f} {:2.4f} | W_loss {:2.4f} {:5.4f} | Time {:5.2f}s'

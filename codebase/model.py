@@ -212,7 +212,8 @@ class CNN_Encoder(nn.Module):
     def forward(self, x):
         features = None
         # --> fixed-size input: batch x 3 x 299 x 299
-        x = F.interpolate(input=x, size=(299, 299), mode='bilinear', align_corners=True) # prev nn.Upsample
+        x = nn.Upsample(size=(299, 299), mode='bilinear')(x)
+        #x = F.interpolate(input=x, size=(299, 299), mode='bilinear', align_corners=True) # prev nn.Upsample
         # 299 x 299 x 3
         x = self.Conv2d_1a_3x3(x)
         # 149 x 149 x 32
