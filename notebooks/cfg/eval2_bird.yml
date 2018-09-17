@@ -8,14 +8,14 @@ CUDA: False
 WORKERS: 1
 
 
-B_VALIDATION: True  # True  # False
+B_VALIDATION: False  # True  # False
 TREE:
     BRANCH_NUM: 2
 
 
 TRAIN:
     FLAG: False
-    NET_G: 'models/birds/attn1_netG_epoch_240.pth'  # '../models/bird_AttnGAN2.pth'
+    NET_G: 'models/birds/netG_cur_epoch_160.pth'  # '../models/bird_AttnGAN2.pth'
     B_NET_D: False
     BATCH_SIZE: 100
     NET_E_TEXT: 'DAMSMencoders/birds/text_encoder200.pth'

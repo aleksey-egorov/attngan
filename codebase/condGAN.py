@@ -51,7 +51,7 @@ class condGAN(object):
         self.log.add("Init condGAN ... ")
 
 
-    def build_models(self):
+    def build_models(self, build_discr=True):
         ''' Building models '''
 
         # Building Text and Image encoders
@@ -82,31 +82,35 @@ class condGAN(object):
         # Building generators and discriminators
         netsD = []
         if cfg.GAN.B_DCGAN:
-            if cfg.TREE.BRANCH_NUM ==1:
-                D_Net = D_Net_64
-            elif cfg.TREE.BRANCH_NUM == 2:
-                D_Net = D_Net_128
-            else:  # cfg.TREE.BRANCH_NUM == 3:
-                D_Net = D_Net_256
-            # TODO: elif cfg.TREE.BRANCH_NUM > 3:
+            if build_discr:
+                if cfg.TREE.BRANCH_NUM ==1:
+                    D_Net = D_Net_64
+                elif cfg.TREE.BRANCH_NUM == 2:
+                    D_Net = D_Net_128
+                else:  # cfg.TREE.BRANCH_NUM == 3:
+                    D_Net = D_Net_256
+                # TODO: elif cfg.TREE.BRANCH_NUM > 3:
+                netsD = [D_Net(b_jcu=False)]
             netG = G_DCGAN()
-            netsD = [D_Net(b_jcu=False)]
         else:
+            if build_discr:
+                if cfg.TREE.BRANCH_NUM > 0:
+                    netsD.append(D_Net_64())
+                if cfg.TREE.BRANCH_NUM > 1:
+                    netsD.append(D_Net_128())
+                if cfg.TREE.BRANCH_NUM > 2:
+                    netsD.append(D_Net_256())
+                # TODO: if cfg.TREE.BRANCH_NUM > 3:
             netG = G_FC_Net()
-            if cfg.TREE.BRANCH_NUM > 0:
-                netsD.append(D_Net_64())
-            if cfg.TREE.BRANCH_NUM > 1:
-                netsD.append(D_Net_128())
-            if cfg.TREE.BRANCH_NUM > 2:
-                netsD.append(D_Net_256())
-            # TODO: if cfg.TREE.BRANCH_NUM > 3:
+
+        number_nets = cfg.TREE.BRANCH_NUM
         netG.apply(weights_init)
         self.log.add('G_net: {}'.format(netG), False)
 
         for i in range(len(netsD)):
             netsD[i].apply(weights_init)
             self.log.add('D_net[{}]: {}'.format(i, netsD[i]), False)
-        self.log.add('Number of nets G/D: {}'.format(len(netsD)))
+        self.log.add('Number of nets G/D: {}'.format(number_nets))
 
         # Loading pretrained generators and discriminators
         epoch = 0
@@ -310,8 +314,8 @@ class condGAN(object):
         self.save_model(self.max_epoch, netG, avg_param_G, netsD, errG_total.data[0], errD_total.data[0])
 
 
-    def train_1(self):
-        '''Training models'''
+    ''' def train_1(self):
+        
 
         text_encoder, image_encoder, netG, netsD, start_epoch = self.build_models()
         optimizerG, optimizersD = self.define_optimizers(netG, netsD)
@@ -470,6 +474,8 @@ class condGAN(object):
             torch.save(netD.state_dict(),
                        '%s/netD%d.pth' % (self.model_dir, i))
         print('Save G/Ds models.')
+        
+        '''
 
 
     def save_model(self, epoch, netG, avg_param_G,  netsD, G_loss, D_loss, force=False):
@@ -545,31 +551,33 @@ class condGAN(object):
     def sampling(self, split_dir):
         '''Generate images from training set text annotations'''
 
-        '''    
         if cfg.TRAIN.NET_G == '':
             self.log.add('Error: the path for morels is not found!')
         else:
             if split_dir == 'test':
                 split_dir = 'valid'
 
+            text_encoder, image_encoder, netG, netsD, _ = self.build_models(build_discr=False)
+
+
             # Build and load the generator
-            if cfg.GAN.B_DCGAN:
-                netG = G_DCGAN()
-            else:
-                netG = G_FC_Net()
-            netG.apply(weights_init)
-            if cfg.CUDA:
-                netG.cuda()
-            netG.eval()
+            #if cfg.GAN.B_DCGAN:
+            #    netG = G_DCGAN()
+            #else:
+            #    netG = G_FC_Net()
+            #netG.apply(weights_init)
+            #if cfg.CUDA:
+            #    netG.cuda()
+            #netG.eval()
 
             #
-            text_encoder = RNN_Encoder(self.n_words, nhidden=cfg.TEXT.EMBEDDING_DIM, nlayers=cfg.TEXT.RNN_LAYERS)
-            state_dict = torch.load(cfg.TRAIN.NET_E_TEXT, map_location=lambda storage, loc: storage)
-            text_encoder.load_state_dict(state_dict)
-            self.log.add('Load text encoder from:', cfg.TRAIN.NET_E_TEXT)
-            if cfg.CUDA:
-                text_encoder = text_encoder.cuda()
-            text_encoder.eval()
+            #text_encoder = RNN_Encoder(self.n_words, nhidden=cfg.TEXT.EMBEDDING_DIM, nlayers=cfg.TEXT.RNN_LAYERS)
+            #state_dict = torch.load(cfg.TRAIN.NET_E_TEXT, map_location=lambda storage, loc: storage)
+            #text_encoder.load_state_dict(state_dict)
+            #self.log.add('Load text encoder from:', cfg.TRAIN.NET_E_TEXT)
+            #if cfg.CUDA:
+            #    text_encoder = text_encoder.cuda()
+            #text_encoder.eval()
 
             batch_size = self.batch_size
             nz = cfg.GAN.Z_DIM
@@ -631,7 +639,8 @@ class condGAN(object):
                         im = Image.fromarray(im)
                         fullpath = '%s_s%d.png' % (s_tmp, k)
                         im.save(fullpath)
-        '''
+
+
 
     def generate_single_image(self, images, filenames, save_dir, split_dir, sentenceID=0):
         '''Generate single image'''
