@@ -6,6 +6,7 @@ from codebase.utils.config import cfg
 from codebase.global_attention import func_attention
 
 
+
 # ##################Loss for matching text-image###################
 def cosine_similarity(x1, x2, dim=1, eps=1e-8):
     """Returns cosine similarity between x1 and x2, computed along dim.
@@ -131,8 +132,7 @@ def words_loss(img_features, words_emb, labels,
     return loss0, loss1, att_maps
 
 
-# ---------------- Loss for G and Ds ------------------ #
-
+# ##################Loss for G and Ds##############################
 def discriminator_loss(netD, real_imgs, fake_imgs, conditions,
                        real_labels, fake_labels):
     # Forward
@@ -167,7 +167,6 @@ def generator_loss(netsD, image_encoder, fake_imgs, real_labels,
     numDs = len(netsD)
     batch_size = real_labels.size(0)
     logs = ''
-
     # Forward
     errG_total = 0
     for i in range(numDs):
@@ -182,7 +181,7 @@ def generator_loss(netsD, image_encoder, fake_imgs, real_labels,
             g_loss = cond_errG
         errG_total += g_loss
         # err_img = errG_total.data[0]
-        logs += 'G%d_loss: %.4f ' % (i, g_loss.data.item())
+        logs += 'g_loss%d: %.2f ' % (i, g_loss.data[0])
 
         # Ranking loss
         if i == (numDs - 1):
@@ -203,12 +202,12 @@ def generator_loss(netsD, image_encoder, fake_imgs, real_labels,
             # err_sent = err_sent + s_loss.data[0]
 
             errG_total += w_loss + s_loss
-            logs += 'W_loss: %.4f S_loss: %.4f ' % (w_loss.data.item(), s_loss.data.item())
+            logs += 'w_loss: %.2f s_loss: %.2f ' % (w_loss.data[0], s_loss.data[0])
     return errG_total, logs
 
 
+##################################################################
 def KL_loss(mu, logvar):
-    '''KL Devergence loss'''
     # -0.5 * sum(1 + log(sigma^2) - mu^2 - sigma^2)
     KLD_element = mu.pow(2).add_(logvar.exp()).mul_(-1).add_(1).add_(logvar)
     KLD = torch.mean(KLD_element).mul_(-0.5)

@@ -1,7 +1,7 @@
 from __future__ import division
 from __future__ import print_function
 
-import yaml
+import os.path as osp
 import numpy as np
 from easydict import EasyDict as edict
 
@@ -17,7 +17,6 @@ __C.SAVE_DIR = ''
 __C.GPU_ID = 0
 __C.CUDA = True
 __C.WORKERS = 6
-__C.MANUAL_SEED = None
 
 __C.RNN_TYPE = 'LSTM'   # 'GRU'
 __C.B_VALIDATION = False
@@ -42,7 +41,6 @@ __C.TRAIN.NET_E_TEXT = ''
 __C.TRAIN.NET_E_IMG = ''
 __C.TRAIN.NET_G = ''
 __C.TRAIN.B_NET_D = True
-__C.TRAIN.NET_D = []
 
 __C.TRAIN.SMOOTH = edict()
 __C.TRAIN.SMOOTH.GAMMA1 = 5.0
@@ -76,9 +74,9 @@ def _merge_a_into_b(a, b):
     if type(a) is not edict:
         return
 
-    for k, v in a.items():
+    for k, v in a.items(): # minor_change "iteritems()"
         # a must specify keys that are in b
-        if b[k] == None:
+        if b[k] == None : # minor_change "not b.has_key(k):"
             raise KeyError('{} is not a valid config key'.format(k))
 
         # the types must match, too
@@ -104,6 +102,7 @@ def _merge_a_into_b(a, b):
 
 def cfg_from_file(filename):
     """Load a config file and merge it into the default options."""
+    import yaml
     with open(filename, 'r') as f:
         yaml_cfg = edict(yaml.load(f))
 

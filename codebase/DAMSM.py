@@ -32,7 +32,7 @@ class DAMSM(object):
             cudnn.benchmark = True
 
         self.log = log
-        self.update_interval = 50
+        self.update_interval = 200
         self.batch_size = cfg.TRAIN.BATCH_SIZE
         self.max_epoch = cfg.TRAIN.MAX_EPOCH
         #self.snapshot_interval = cfg.TRAIN.SNAPSHOT_INTERVAL
