@@ -40,6 +40,7 @@ __C.TRAIN.NET_E = ''
 __C.TRAIN.NET_E_TEXT = ''
 __C.TRAIN.NET_E_IMG = ''
 __C.TRAIN.NET_G = ''
+__C.TRAIN.NET_D = []
 __C.TRAIN.B_NET_D = True
 
 __C.TRAIN.SMOOTH = edict()

@@ -1,4 +1,4 @@
-CONFIG_NAME: 'glu-gan2'
+CONFIG_NAME: 'Attn2'
 
 DATASET_NAME: 'coco'
 DATA_DIR: 'data/coco'
@@ -16,11 +16,12 @@ TRAIN:
     B_NET_D: True
     BATCH_SIZE: 14  # 32
     MAX_EPOCH: 120
-    SNAPSHOT_INTERVAL: 5
+    SNAPSHOT_INTERVAL: 2
     DISCRIMINATOR_LR: 0.0002
     GENERATOR_LR: 0.0002
     #
-    NET_E: 'DAMSMencoders/coco/text_encoder100.pth'
+    NET_E_TEXT: 'DAMSMencoders/coco/text_encoder_7.pth'
+    NET_E_IMG: 'DAMSMencoders/coco/image_encoder_7.pth'
     SMOOTH:
         GAMMA1: 4.0  # 1,2,5 good 4 best  10&100bad
         GAMMA2: 5.0
