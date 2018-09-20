@@ -1,1 +1,1 @@
-# attngan
+# AttnGAN
