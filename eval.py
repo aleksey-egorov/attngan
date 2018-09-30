@@ -38,4 +38,4 @@ if __name__ == "__main__":
     else:
         model.prepare_dict_from_files(dataset.wordtoix)  # generate images for customized captions
     end_t = time.time()
-    log.add('Total time for evaluation:', end_t - start_t)
+    log.add('Total time for evaluation: {}'.format(end_t - start_t))

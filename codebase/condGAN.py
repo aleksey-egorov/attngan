@@ -465,7 +465,7 @@ class condGAN(object):
             im.save(fullpath)
 
 
-    def prepare_dict_from_files(self, wordtoix):
+    def prepare_dict_from_files(self, wordtoix, tries=1, threshold=0.05):
         '''generate images from example sentences'''
 
         filepath = '%s/example_filenames.txt' % (cfg.DATA_DIR)
@@ -486,7 +486,7 @@ class condGAN(object):
                 key = name[(name.rfind('/') + 1):]
                 data_dic[key] = [cap_array, cap_lens, sorted_indices]
 
-        return self.generate_images(data_dic)
+        return self.generate_images(data_dic, tries, threshold)
 
 
     def tokenize_sentences(self, sentences, wordtoix):
@@ -581,7 +581,6 @@ class condGAN(object):
 
     def generate_image(self, text_encoder, netG, netsD, batch_size, captions, cap_lens, sorted_indices, noise, image_name, tries, threshold):
         '''Generate single image'''
-
 
         images = {0: [], 1: [], 2: []}
 
