@@ -35,14 +35,9 @@
     
     
     
-    
+### Ссылки    
 
-@article{Tao18attngan,
-  author    = {Tao Xu, Pengchuan Zhang, Qiuyuan Huang, Han Zhang, Zhe Gan, Xiaolei Huang, Xiaodong He},
-  title     = {AttnGAN: Fine-Grained Text to Image Generation with Attentional Generative Adversarial Networks},
-  Year = {2018},
-  booktitle = {{CVPR}}
-}
+* <a href='https://arxiv.org/abs/1711.10485'>AttnGAN: Fine-Grained Text to Image Generation with Attentional Generative Adversarial Networks</a>, 2018 - Tao Xu, Pengchuan Zhang, Qiuyuan Huang, Han Zhang, Zhe Gan, Xiaolei Huang, Xiaodong He
 
 
 
