@@ -24,15 +24,22 @@
     
     python pretrain_DAMSM.py --cfg cfg/damsm_bird.yml --gpu 0
     
+Результаты предобучения записываются в папку output. После завершения - выбранные файлы энкодеров необходимо поместить в папку DAMSMencoders, и прописать к ним путь в конфиге attn_bird.yml 
+    
 Обучение AttnGAN:
     
     python train.py --cfg cfg/attn_bird.yml --gpu 0
+
+Результаты обучения записываются в папку output. После завершения - выбранные файлы моделей поместить в папку models, и прописать к ним путь в конфиге eval_bird.yml    
+
     
 ### Запуск
     
     python eval.py --cfg cfg/eval_bird.yml --gpu 0
     
-    
+Сгенерированные изображения помещаются в папку results. По умолчанию, генерация ведется по фразам из data/birds/example_captions.txt  
+
+Также доступен Jupyter Notebook для тестирования - notebooks/eval.ipynb    
     
     
 ### Ссылки    
