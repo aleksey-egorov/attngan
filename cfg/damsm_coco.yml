@@ -3,7 +3,7 @@ CONFIG_NAME: 'DAMSM'
 DATASET_NAME: 'coco'
 DATA_DIR: 'data/coco'
 GPU_ID: 0
-WORKERS: 1
+WORKERS: 4
 
 
 TREE:
@@ -15,8 +15,8 @@ TRAIN:
     FLAG: True
     NET_E: ''  # '../DAMSMencoders/coco/text_encoder100.pth'
     BATCH_SIZE: 48
-    MAX_EPOCH: 600
-    SNAPSHOT_INTERVAL: 5
+    MAX_EPOCH: 300
+    SNAPSHOT_INTERVAL: 10
     ENCODER_LR: 0.002  # 0.0002best; 0.002good
     RNN_GRAD_CLIP: 0.25
     SMOOTH:

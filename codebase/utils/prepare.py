@@ -37,7 +37,7 @@ class Preparation():
         pprint.pprint(cfg)
 
     def get_args(self, default_cfg):
-        parser = argparse.ArgumentParser(description='Train a DAMSM network')
+        parser = argparse.ArgumentParser(description='')
         parser.add_argument('--cfg', dest='cfg_file',
                             help='optional config file',
                             default=default_cfg, type=str)
@@ -60,8 +60,6 @@ class Preparation():
         torch.manual_seed(manual_seed)
         if cfg.CUDA:
             torch.cuda.manual_seed_all(manual_seed)
-
-        print ("manual_seed = {}".format(manual_seed))
 
     def set_output_dir(self):
         # Setting output

@@ -17,6 +17,7 @@ __C.SAVE_DIR = ''
 __C.GPU_ID = 0
 __C.CUDA = True
 __C.WORKERS = 6
+__C.MANUAL_SEED = None
 
 __C.RNN_TYPE = 'LSTM'   # 'GRU'
 __C.B_VALIDATION = False
@@ -40,6 +41,7 @@ __C.TRAIN.NET_E = ''
 __C.TRAIN.NET_E_TEXT = ''
 __C.TRAIN.NET_E_IMG = ''
 __C.TRAIN.NET_G = ''
+__C.TRAIN.NET_D = []
 __C.TRAIN.B_NET_D = True
 
 __C.TRAIN.SMOOTH = edict()

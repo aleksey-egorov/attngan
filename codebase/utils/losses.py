@@ -212,3 +212,21 @@ def KL_loss(mu, logvar):
     KLD_element = mu.pow(2).add_(logvar.exp()).mul_(-1).add_(1).add_(logvar)
     KLD = torch.mean(KLD_element).mul_(-0.5)
     return KLD
+
+
+def discriminator_score(netD, fake_imgs, conditions, fake_labels):
+    # Forward
+    fake_features = netD(fake_imgs.detach())
+    # loss
+    #
+    cond_fake_logits = netD.COND_DNET(fake_features, conditions)
+    cond_fake_errD = nn.BCELoss()(cond_fake_logits, fake_labels)
+    #
+
+    if netD.UNCOND_DNET is not None:
+        fake_logits = netD.UNCOND_DNET(fake_features)
+        fake_errD = nn.BCELoss()(fake_logits, fake_labels)
+        errD = (fake_errD + cond_fake_errD ) / 2.
+    else:
+        errD = cond_fake_errD
+    return errD

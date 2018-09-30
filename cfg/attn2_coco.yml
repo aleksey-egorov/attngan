@@ -1,0 +1,42 @@
+CONFIG_NAME: 'Attn2'
+
+DATASET_NAME: 'coco'
+DATA_DIR: 'data/coco'
+GPU_ID: 0
+WORKERS: 4
+
+
+TREE:
+    BRANCH_NUM: 3
+
+
+TRAIN:
+    FLAG: True
+    NET_G: 'models/coco/netG_epoch_20.pth'  # '../models/bird_AttnGAN2.pth'
+    NET_D: ['models/coco/netD0_epoch_20.pth','models/coco/netD1_epoch_20.pth','models/coco/netD2_epoch_20.pth']  # '../models/bird_AttnGAN2.pth'
+    B_NET_D: True
+    BATCH_SIZE: 16  # 32
+    MAX_EPOCH: 200
+    SNAPSHOT_INTERVAL: 5
+    DISCRIMINATOR_LR: 0.0002
+    GENERATOR_LR: 0.0002
+    #
+    NET_E_TEXT: 'DAMSMencoders/coco/text_encoder_80.pth'
+    NET_E_IMG: 'DAMSMencoders/coco/image_encoder_80.pth'
+    SMOOTH:
+        GAMMA1: 4.0  # 1,2,5 good 4 best  10&100bad
+        GAMMA2: 5.0
+        GAMMA3: 10.0  # 10good 1&100bad
+        LAMBDA: 50.0
+
+
+GAN:
+    DF_DIM: 96
+    GF_DIM: 48
+    Z_DIM: 100
+    R_NUM: 3
+
+TEXT:
+    EMBEDDING_DIM: 256
+    CAPTIONS_PER_IMAGE: 5
+    WORDS_NUM: 12

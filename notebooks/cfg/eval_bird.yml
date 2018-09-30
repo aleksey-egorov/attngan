@@ -15,9 +15,10 @@ TREE:
 
 TRAIN:
     FLAG: False
-    NET_G: '../models/birds/attn2n_netG_epoch_100.pth'  # '../models/bird_AttnGAN2.pth'
-    B_NET_D: False
-    BATCH_SIZE: 100
+    NET_G: '../models/birds/attn2o_netG_epoch_600.pth'  # '../models/bird_AttnGAN2.pth'
+    NET_D: ['../models/birds/netD0_epoch_600.pth','../models/birds/netD1_epoch_600.pth','../models/birds/netD2_epoch_600.pth']
+    B_NET_D: True
+    BATCH_SIZE: 1
     NET_E_TEXT: '../DAMSMencoders/birds/text_encoder200.pth'
 
 
