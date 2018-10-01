@@ -5,7 +5,7 @@
 ### Используются
 
 * Python 3.6
-* Pytorch 0.4
+* Pytorch 0.4.1
 * python-dateutil
 * easydict
 * pandas
