@@ -40,7 +40,10 @@
 Сгенерированные изображения помещаются в папку results. По умолчанию, генерация ведется по фразам из data/birds/example_captions.txt  
 
 Также доступен Jupyter Notebook для тестирования - notebooks/eval.ipynb    
-    
+  
+### Примеры работы
+
+<img src="">    
     
 ### Ссылки    
 
