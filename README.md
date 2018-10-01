@@ -43,7 +43,8 @@
   
 ### Примеры работы
 
-<img src="">    
+<img src="https://github.com/aleksey-egorov/attngan/blob/master/images/try1.png">    
+<img src="https://github.com/aleksey-egorov/attngan/blob/master/images/try2.png">    
     
 ### Ссылки    
 
